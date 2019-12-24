@@ -1,0 +1,31 @@
+1、Compile antlr4-cpp-runtime-4.7.2-source.zip into libantlr4-runtime.so.
+   /*install uuid package*/
+   yum install libuuid-devel
+   /*install gcc*/
+   mkdir objdirs
+   cd gcc-5.2.0
+   ./gcc-5.2.0/contrib/download_prerequisites
+   cd ../objdirs
+   ../gcc-5.2.0/configure --prefix=../gcc_5.2.0_install/ --enable-languages=c,c++
+   make
+   make install
+   /*specify g++ compiler in CMakeLists.txt*/
+   set(CMAKE_CXX_COMPILER "/root/gcc_install/gcc_5.2.0_install/bin/g++")
+   set(CMAKE_C_COMPILER "/root/gcc_install/gcc_5.2.0_install/bin/gcc")
+   /*we can modify the compile flags in the file, such as close the optimize switch*/
+   runtime/CMakeFiles/antlr4_shared.dir/flags.make
+
+2、Use antlr-4.7.2-complete.jar compile sqliLexer.g4  and sqliParser.g4 to generate lexer and parser source code respectively.
+   export CLASSPATH=".:/root/test_antlr4/antlr-4.7.2-complete.jar:$CLASSPATH"
+   alias antlr4='java -Xmx500M -cp "/root/test_antlr4/antlr-4.7.2-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
+   /*Generate listener by default*/
+   antlr4 -Dlanguage=Cpp sqliLexer.g4
+   antlr4 -Dlanguage=Cpp sqliParser.g4
+   /*Generate listener by default*/
+   antlr4 -visitor -Dlanguage=Cpp sqliLexer.g4
+   antlr4 -visitor -Dlanguage=Cpp sqliParser.g4
+
+3、Test program reference lexer and parser to do syntax parse, linking with libantlr4-runtime.so.
+   /usr/bin/g++_5_0 -O3 -std=c++11 -I/usr/local/include/antlr4-runtime sqliLexer.cpp sqliParser.cpp sqliParserBaseListener.cpp sqliParserListener.cpp cpp_test.cpp -lantlr4-runtime -I./ -o test_case
+
+   LD_LIBRARY_PATH=../gcc_install/gcc_5.2.0_install/lib64 ./test_case
