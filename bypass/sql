@@ -104,3 +104,34 @@ mysql> /*!select * from students*/;
 +----+--------+--------+------+
 3 rows in set (0.00 sec)
 
+mysql> select-id+1-1 from students;
++---------+
+| -id+1-1 |
++---------+
+|      -1 |
+|      -2 |
+|      -3 |
++---------+
+3 rows in set (0.00 sec)
+
+mysql> select-id+1-1.from students;
++----------+
+| -id+1-1. |
++----------+
+|       -1 |
+|       -2 |
+|       -3 |
++----------+
+3 rows in set (0.00 sec)
+
+mysql> /*!50000select*/ id from students;
++----+
+| id |
++----+
+|  1 |
+|  2 |
+|  3 |
++----+
+3 rows in set (0.00 sec)
+
+
