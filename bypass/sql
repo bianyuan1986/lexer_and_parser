@@ -1,4 +1,4 @@
-mysql> select'id', id, name,3e0from students;
+mysql> select'id', id, name,3e0from students;  #去除空格
 +----+----+--------+-----+
 | id | id | name   | 3e0 |
 +----+----+--------+-----+
@@ -6,5 +6,101 @@ mysql> select'id', id, name,3e0from students;
 | id |  2 | Tina   |   3 |
 | id |  3 | Felica |   3 |
 +----+----+--------+-----+
+3 rows in set (0.00 sec)
+mysql> select(count(3))from(students); #括号分割
++------------+
+| (count(3)) |
++------------+
+|          3 |
++------------+
+1 row in set (0.00 sec)
+mysql> select  #换行分割
+    -> count(3)
+    -> from
+    -> students;
++----------+
+| count(3) |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+mysql> select name from students where name like 0x5425; #十六进制表示字符串
++-------+
+| name  |
++-------+
+| Tiger |
+| Tina  |
++-------+
+2 rows in set (0.00 sec)
+mysql> select name from students where name like char(84,37); #使用char函数表示字符串
++-------+
+| name  |
++-------+
+| Tiger |
+| Tina  |
++-------+
+2 rows in set (0.00 sec)
+mysql> select '10'*3e0; #'10'会被转换为整形然后乘以3最后乘以10^0
++----------+
+| '10'*3e0 |
++----------+
+|       30 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select '100'*3e1;
++-----------+
+| '100'*3e1 |
++-----------+
+|      3000 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select '100'*3e2;
++-----------+
+| '100'*3e2 |
++-----------+
+|     30000 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select /*!**/ from students; #使用/*!*/逃逸
++----+--------+--------+------+
+| id | name   | gender | age  |
++----+--------+--------+------+
+|  1 | Tiger  | male   |   27 |
+|  2 | Tina   | female |   28 |
+|  3 | Felica | female |   26 |
++----+--------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> select /*!* from*/ students;
++----+--------+--------+------+
+| id | name   | gender | age  |
++----+--------+--------+------+
+|  1 | Tiger  | male   |   27 |
+|  2 | Tina   | female |   28 |
+|  3 | Felica | female |   26 |
++----+--------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> select /*!* from students*/;
++----+--------+--------+------+
+| id | name   | gender | age  |
++----+--------+--------+------+
+|  1 | Tiger  | male   |   27 |
+|  2 | Tina   | female |   28 |
+|  3 | Felica | female |   26 |
++----+--------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> /*!select * from students*/;
++----+--------+--------+------+
+| id | name   | gender | age  |
++----+--------+--------+------+
+|  1 | Tiger  | male   |   27 |
+|  2 | Tina   | female |   28 |
+|  3 | Felica | female |   26 |
++----+--------+--------+------+
 3 rows in set (0.00 sec)
 
