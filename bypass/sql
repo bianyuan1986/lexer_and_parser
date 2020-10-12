@@ -1,0 +1,10 @@
+mysql> select'id', id, name,3e0from students;
++----+----+--------+-----+
+| id | id | name   | 3e0 |
++----+----+--------+-----+
+| id |  1 | Tiger  |   3 |
+| id |  2 | Tina   |   3 |
+| id |  3 | Felica |   3 |
++----+----+--------+-----+
+3 rows in set (0.00 sec)
+
