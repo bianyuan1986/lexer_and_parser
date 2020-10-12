@@ -134,4 +134,53 @@ mysql> /*!50000select*/ id from students; #50000版本号
 +----+
 3 rows in set (0.00 sec)
 
+mysql> select `version`();
++-------------+
+| `version`() |
++-------------+
+| 8.0.21      |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> /*!60000select*/ id from students;
++----+
+| id |
++----+
+|  1 |
+|  2 |
+|  3 |
++----+
+3 rows in set (0.00 sec)
+
+mysql> /*!70000select*/ id from students;
++----+
+| id |
++----+
+|  1 |
+|  2 |
+|  3 |
++----+
+3 rows in set (0.00 sec)
+
+mysql> /*!80000select*/ id from students;
++----+
+| id |
++----+
+|  1 |
+|  2 |
+|  3 |
++----+
+3 rows in set (0.00 sec)
+
+mysql> /*!90000select*/ id from students;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id from students' at line 1
+
+mysql> select-count(3)outcome from students; #可以省略as和空格
++---------+
+| outcome |
++---------+
+|      -3 |
++---------+
+1 row in set (0.00 sec)
+
 
